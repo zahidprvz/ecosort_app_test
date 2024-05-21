@@ -12,9 +12,9 @@ EcoSort is a mobile application designed to classify waste materials into differ
 
 ## Screenshots
 
-![Splash Screen](screenshots/splash_screen.png)
-![Home Screen](screenshots/home_screen.png)
-![Result Screen](screenshots/result_screen.png)
+![Splash Screen](screenshots/splash_screen.jpeg)
+![Home Screen](screenshots/home_screen.jpeg)
+![Result Screen](screenshots/result_screen.jpeg)
 
 ## Installation
 
