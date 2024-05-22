@@ -42,6 +42,7 @@ dependencies:
   tflite_flutter: ^0.10.4
   image: ^4.1.7
   flutter_launcher_icons: ^0.13.1
+  image_cropper: ^6.0.0
 
 dev_dependencies:
   flutter_test:

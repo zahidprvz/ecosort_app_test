@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +9,7 @@ import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
 class ResultScreen extends StatefulWidget {
   final File imageFile;
 
-  const ResultScreen({Key? key, required this.imageFile}) : super(key: key);
+  const ResultScreen({super.key, required this.imageFile});
 
   @override
   _ResultScreenState createState() => _ResultScreenState();
@@ -121,6 +119,21 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
     });
   }
 
+  Map<String, String> _descriptions = {
+    'battery': 'Batteries contain chemicals and metals that are hazardous. They should be disposed of at designated collection points for recycling.',
+    'biological': 'Biological waste includes food scraps and other organic materials. It can be composted to create nutrient-rich soil.',
+    'brown-glass': 'Brown glass is typically used for beer and certain other beverages. It can be recycled multiple times without losing quality.',
+    'cardboard': 'Cardboard can be recycled into new paper products. Ensure it is clean and dry before recycling.',
+    'clothes': 'Old clothes can be donated, repurposed, or recycled into textile fibers.',
+    'green-glass': 'Green glass is often used for wine bottles. Like brown glass, it can be recycled indefinitely.',
+    'metal': 'Metal items like cans can be recycled into new metal products. Ensure they are clean before recycling.',
+    'paper': 'Paper can be recycled into new paper products. Avoid recycling contaminated or greasy paper.',
+    'plastic': 'Plastics come in various types. Check local recycling guidelines to determine which plastics can be recycled.',
+    'shoes': 'Old shoes can often be donated or repurposed. Some brands offer recycling programs.',
+    'trash': 'Trash refers to items that cannot be recycled or composted. These should be disposed of in the trash bin.',
+    'white-glass': 'White (clear) glass is used for beverages and food jars. It can be recycled multiple times without losing quality.',
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -177,10 +190,28 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
               ),
             ),
             const SizedBox(height: 20),
-            Text(
-              _result.isEmpty ? '' : 'Classified as: $_result',
-              style: const TextStyle(fontSize: 18),
-            ),
+            if (_result.isNotEmpty)
+              Card(
+                elevation: 5,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Classified as: $_result',
+                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        _descriptions[_result] ?? 'No description available.',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),
