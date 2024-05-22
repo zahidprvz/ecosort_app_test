@@ -52,7 +52,7 @@ flutter run
 The app uses a TensorFlow Lite model trained to classify images of garbage into various categories such as battery, biological, cardboard, etc.
 
 ### Setup Instructions
-1. Download the TensorFlow Lite model and place it in the `assets` directory.
+1. Download the [TensorFlow Lite Model](https://drive.google.com/file/d/18Z0A4d8Ss7m7vkeavzQvIzcCRkfzgxIQ/view?usp=drive_link) and place it in the `assets` directory.
 2. Ensure the `pubspec.yaml` file includes the assets:
    ```yaml
    assets:
