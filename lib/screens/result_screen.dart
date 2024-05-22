@@ -193,6 +193,8 @@ class _ResultScreenState extends State<ResultScreen>
       appBar: AppBar(
         title: const Text('Result'),
         centerTitle: true,
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

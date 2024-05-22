@@ -1,12 +1,14 @@
 import 'dart:io';
 
+import 'package:ecosort_app_test/screens/about_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'result_screen.dart';
 import '../components/help_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,18 @@ class HomeScreen extends StatelessWidget {
         foregroundColor: Colors.white,
         title: const Text('Waste Classification'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info),
+            color: Colors.green[300],
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -37,6 +51,10 @@ class HomeScreen extends StatelessWidget {
   Widget _buildWelcomeCard() {
     return Card(
       elevation: 4,
+      borderOnForeground: true,
+      semanticContainer: true,
+      surfaceTintColor: Colors.yellowAccent,
+      shadowColor: Colors.black,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
@@ -79,6 +97,7 @@ class HomeScreen extends StatelessWidget {
           label: const Text('Take Photo'),
           style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.secondary,
+            foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -94,6 +113,7 @@ class HomeScreen extends StatelessWidget {
           label: const Text('Choose Image'),
           style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.secondary,
+            foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -121,7 +141,7 @@ class HomeScreen extends StatelessWidget {
       ),
       child: const Text(
         'Help',
-        style: TextStyle(fontSize: 18),
+        style: TextStyle(fontSize: 18, color: Colors.white),
       ),
     );
   }
