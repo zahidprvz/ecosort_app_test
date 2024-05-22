@@ -24,6 +24,35 @@ class _ResultScreenState extends State<ResultScreen>
   String _result = '';
   bool _processing = false;
   bool _buttonDisabled = false;
+  bool _loading = false;
+  String _uploadStatus = '';
+
+  final Map<String, String> _descriptions = {
+    'battery':
+        'Batteries contain chemicals and metals that are hazardous. They should be disposed of at designated collection points for recycling.',
+    'biological':
+        'Biological waste includes food scraps and other organic materials. It can be composted to create nutrient-rich soil.',
+    'brown-glass':
+        'Brown glass is typically used for beer and certain other beverages. It can be recycled multiple times without losing quality.',
+    'cardboard':
+        'Cardboard can be recycled into new paper products. Ensure it is clean and dry before recycling.',
+    'clothes':
+        'Old clothes can be donated, repurposed, or recycled into textile fibers.',
+    'green-glass':
+        'Green glass is often used for wine bottles. Like brown glass, it can be recycled indefinitely.',
+    'metal':
+        'Metal items like cans can be recycled into new metal products. Ensure they are clean before recycling.',
+    'paper':
+        'Paper can be recycled into new paper products. Avoid recycling contaminated or greasy paper.',
+    'plastic':
+        'Plastics come in various types. Check local recycling guidelines to determine which plastics can be recycled.',
+    'shoes':
+        'Old shoes can often be donated or repurposed. Some brands offer recycling programs.',
+    'trash':
+        'Trash refers to items that cannot be recycled or composted. These should be disposed of in the trash bin.',
+    'white-glass':
+        'White (clear) glass is used for beverages and food jars. It can be recycled multiple times without losing quality.',
+  };
 
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -76,19 +105,21 @@ class _ResultScreenState extends State<ResultScreen>
     }
   }
 
-  Future<void> _classifyImage(File image) async {
+  Future<bool> _classifyImage(File image) async {
     setState(() {
-      _processing = true;
+      _loading = true;
       _buttonDisabled = true;
+      //_uploadStatus = 'Wait before the data is sent to Firebase database';
     });
 
     if (_interpreter == null) {
       if (kDebugMode) {
         print('Interpreter not initialized');
       }
-      return;
+      return false;
     }
 
+    // Existing code for image classification...
     var imageBytes = await image.readAsBytes();
     img.Image? imageAsImage = img.decodeImage(imageBytes);
 
@@ -119,6 +150,7 @@ class _ResultScreenState extends State<ResultScreen>
 
     var maxIndex = output[0].indexOf(
         output[0].reduce((a, b) => (a as double) > (b as double) ? a : b));
+
     setState(() {
       _processing = false;
       _result = _labels[maxIndex];
@@ -127,35 +159,33 @@ class _ResultScreenState extends State<ResultScreen>
 
     // Store the image and its result in Firebase
     FirebaseService firebaseService = FirebaseService();
-    await firebaseService.storeImageResult(widget.imageFile, _result);
-  }
+    bool success =
+        await firebaseService.storeImageResult(widget.imageFile, _result);
 
-  final Map<String, String> _descriptions = {
-    'battery':
-        'Batteries contain chemicals and metals that are hazardous. They should be disposed of at designated collection points for recycling.',
-    'biological':
-        'Biological waste includes food scraps and other organic materials. It can be composted to create nutrient-rich soil.',
-    'brown-glass':
-        'Brown glass is typically used for beer and certain other beverages. It can be recycled multiple times without losing quality.',
-    'cardboard':
-        'Cardboard can be recycled into new paper products. Ensure it is clean and dry before recycling.',
-    'clothes':
-        'Old clothes can be donated, repurposed, or recycled into textile fibers.',
-    'green-glass':
-        'Green glass is often used for wine bottles. Like brown glass, it can be recycled indefinitely.',
-    'metal':
-        'Metal items like cans can be recycled into new metal products. Ensure they are clean before recycling.',
-    'paper':
-        'Paper can be recycled into new paper products. Avoid recycling contaminated or greasy paper.',
-    'plastic':
-        'Plastics come in various types. Check local recycling guidelines to determine which plastics can be recycled.',
-    'shoes':
-        'Old shoes can often be donated or repurposed. Some brands offer recycling programs.',
-    'trash':
-        'Trash refers to items that cannot be recycled or composted. These should be disposed of in the trash bin.',
-    'white-glass':
-        'White (clear) glass is used for beverages and food jars. It can be recycled multiple times without losing quality.',
-  };
+    setState(() {
+      _loading = false;
+      //_uploadStatus = success? 'Data stored successfully.': 'Failed to store data. Please check your internet connection.';
+    });
+
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Data sent to Database successfully.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              'Failed to store data. Please check your internet connection.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+
+    return success;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,13 +197,9 @@ class _ResultScreenState extends State<ResultScreen>
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Result Screen',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
             const SizedBox(height: 20),
             Stack(
               alignment: Alignment.center,
@@ -184,13 +210,26 @@ class _ResultScreenState extends State<ResultScreen>
                   height: 300,
                   fit: BoxFit.cover,
                 ),
-                if (_processing)
+                if (_loading)
                   Positioned.fill(
                     child: Center(
                       child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(
                           Theme.of(context).colorScheme.secondary,
                         ),
+                      ),
+                    ),
+                  ),
+                if (_uploadStatus.isNotEmpty)
+                  Positioned(
+                    bottom: 20,
+                    child: Text(
+                      _uploadStatus,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: _uploadStatus.startsWith('Failed')
+                            ? Colors.red
+                            : Colors.black,
                       ),
                     ),
                   ),

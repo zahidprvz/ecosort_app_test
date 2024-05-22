@@ -6,8 +6,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 class FirebaseService {
   final DatabaseReference _database = FirebaseDatabase.instance.reference();
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  late bool success = false;
 
-  Future<void> storeImageResult(File imageFile, String result) async {
+  Future<bool> storeImageResult(File imageFile, String result) async {
+
     try {
       // Ensure Firebase is initialized
       await Firebase.initializeApp();
@@ -43,8 +45,20 @@ class FirebaseService {
       });
 
       print('Image and result stored successfully.');
+
+      success = true;
+
     } catch (e) {
       print('Error storing image and result: $e');
+
+      success = false;
+
+    }
+    if(success == true) {
+      return true;
+    }
+    else {
+      return false;
     }
   }
 
