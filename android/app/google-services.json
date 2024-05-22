@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "398639572142",
+    "project_id": "waste-ai",
+    "storage_bucket": "waste-ai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398639572142:android:c6659f6ee4043bbd63b93f",
+        "android_client_info": {
+          "package_name": "waste.ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBnC7QJ5H75ZEbjA8yZxQNbsH5SOXX1K4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

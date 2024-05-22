@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
+import '../services/firebase_service.dart';
 
 class ResultScreen extends StatefulWidget {
   final File imageFile;
@@ -15,7 +17,8 @@ class ResultScreen extends StatefulWidget {
   _ResultScreenState createState() => _ResultScreenState();
 }
 
-class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderStateMixin {
+class _ResultScreenState extends State<ResultScreen>
+    with SingleTickerProviderStateMixin {
   tfl.Interpreter? _interpreter;
   List<String> _labels = [];
   String _result = '';
@@ -49,7 +52,8 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
 
   Future<void> _loadModel() async {
     try {
-      _interpreter = await tfl.Interpreter.fromAsset('assets/garbage_classification_model.tflite');
+      _interpreter = await tfl.Interpreter.fromAsset(
+          'assets/garbage_classification_model.tflite');
       if (kDebugMode) {
         print('Model loaded successfully');
       }
@@ -105,33 +109,52 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
       }
     }
 
-    var inputTensor = Float32List.fromList(inputAsList).reshape([1, 224, 224, 3]);
+    var inputTensor =
+        Float32List.fromList(inputAsList).reshape([1, 224, 224, 3]);
 
-    var output = List.filled(1 * _labels.length, 0.0).reshape([1, _labels.length]);
+    var output =
+        List.filled(1 * _labels.length, 0.0).reshape([1, _labels.length]);
 
     _interpreter!.run(inputTensor, output);
 
-    var maxIndex = output[0].indexOf(output[0].reduce((a, b) => (a as double) > (b as double) ? a : b));
+    var maxIndex = output[0].indexOf(
+        output[0].reduce((a, b) => (a as double) > (b as double) ? a : b));
     setState(() {
       _processing = false;
       _result = _labels[maxIndex];
       _buttonDisabled = false;
     });
+
+    // Store the image and its result in Firebase
+    FirebaseService firebaseService = FirebaseService();
+    await firebaseService.storeImageResult(widget.imageFile, _result);
   }
 
-  Map<String, String> _descriptions = {
-    'battery': 'Batteries contain chemicals and metals that are hazardous. They should be disposed of at designated collection points for recycling.',
-    'biological': 'Biological waste includes food scraps and other organic materials. It can be composted to create nutrient-rich soil.',
-    'brown-glass': 'Brown glass is typically used for beer and certain other beverages. It can be recycled multiple times without losing quality.',
-    'cardboard': 'Cardboard can be recycled into new paper products. Ensure it is clean and dry before recycling.',
-    'clothes': 'Old clothes can be donated, repurposed, or recycled into textile fibers.',
-    'green-glass': 'Green glass is often used for wine bottles. Like brown glass, it can be recycled indefinitely.',
-    'metal': 'Metal items like cans can be recycled into new metal products. Ensure they are clean before recycling.',
-    'paper': 'Paper can be recycled into new paper products. Avoid recycling contaminated or greasy paper.',
-    'plastic': 'Plastics come in various types. Check local recycling guidelines to determine which plastics can be recycled.',
-    'shoes': 'Old shoes can often be donated or repurposed. Some brands offer recycling programs.',
-    'trash': 'Trash refers to items that cannot be recycled or composted. These should be disposed of in the trash bin.',
-    'white-glass': 'White (clear) glass is used for beverages and food jars. It can be recycled multiple times without losing quality.',
+  final Map<String, String> _descriptions = {
+    'battery':
+        'Batteries contain chemicals and metals that are hazardous. They should be disposed of at designated collection points for recycling.',
+    'biological':
+        'Biological waste includes food scraps and other organic materials. It can be composted to create nutrient-rich soil.',
+    'brown-glass':
+        'Brown glass is typically used for beer and certain other beverages. It can be recycled multiple times without losing quality.',
+    'cardboard':
+        'Cardboard can be recycled into new paper products. Ensure it is clean and dry before recycling.',
+    'clothes':
+        'Old clothes can be donated, repurposed, or recycled into textile fibers.',
+    'green-glass':
+        'Green glass is often used for wine bottles. Like brown glass, it can be recycled indefinitely.',
+    'metal':
+        'Metal items like cans can be recycled into new metal products. Ensure they are clean before recycling.',
+    'paper':
+        'Paper can be recycled into new paper products. Avoid recycling contaminated or greasy paper.',
+    'plastic':
+        'Plastics come in various types. Check local recycling guidelines to determine which plastics can be recycled.',
+    'shoes':
+        'Old shoes can often be donated or repurposed. Some brands offer recycling programs.',
+    'trash':
+        'Trash refers to items that cannot be recycled or composted. These should be disposed of in the trash bin.',
+    'white-glass':
+        'White (clear) glass is used for beverages and food jars. It can be recycled multiple times without losing quality.',
   };
 
   @override
@@ -175,14 +198,17 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _buttonDisabled ? null : () async {
-                await _classifyImage(widget.imageFile);
-              },
+              onPressed: _buttonDisabled
+                  ? null
+                  : () async {
+                      await _classifyImage(widget.imageFile);
+                    },
               style: ElevatedButton.styleFrom(
                 backgroundColor: _buttonDisabled
                     ? Colors.grey
                     : Theme.of(context).colorScheme.secondary,
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
               ),
               child: Text(
                 _processing ? 'Processing...' : 'Process Image',
@@ -201,7 +227,8 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                     children: [
                       Text(
                         'Classified as: $_result',
-                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
                       Text(

@@ -1,8 +1,13 @@
+import 'package:ecosort_app_test/firebase_options.dart';
 import 'package:ecosort_app_test/screens/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(const MyApp());
 }
 
@@ -25,5 +30,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
