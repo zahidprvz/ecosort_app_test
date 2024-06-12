@@ -1,12 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:ecosort_app_test/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class HelpDialog extends StatelessWidget {
-  const HelpDialog({Key? key}) : super(key: key);
+  const HelpDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: mobileBackgroundColor,
       title: const Text(
         'Help',
         style: TextStyle(fontWeight: FontWeight.bold),
@@ -53,11 +54,16 @@ class HelpDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildStep(BuildContext context, {required IconData icon, required String text}) {
+  Widget _buildStep(BuildContext context,
+      {required IconData icon, required String text}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Icon(icon, size: 40, color: Theme.of(context).colorScheme.secondary),
+        Icon(
+          icon,
+          size: 40,
+          color: secondaryColor,
+        ),
         const SizedBox(width: 10),
         Expanded(
           child: Text(
@@ -94,15 +100,15 @@ class HelpDialog extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         ...categories.map((category) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: Row(
-            children: [
-              const Icon(Icons.circle, size: 8),
-              const SizedBox(width: 8),
-              Text(category, style: const TextStyle(fontSize: 16)),
-            ],
-          ),
-        )),
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Row(
+                children: [
+                  const Icon(Icons.circle, size: 8),
+                  const SizedBox(width: 8),
+                  Text(category, style: const TextStyle(fontSize: 16)),
+                ],
+              ),
+            )),
       ],
     );
   }

@@ -1,7 +1,8 @@
+import 'package:ecosort_app_test/screens/login_screen.dart';
+import 'package:ecosort_app_test/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../components/animated_logo.dart';
-import '../main.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,16 +19,16 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: const Center(
+    return const Scaffold(
+      backgroundColor: mobileBackgroundColor,
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

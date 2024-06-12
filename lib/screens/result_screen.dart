@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
+import 'package:ecosort_app_test/utils/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +25,7 @@ class _ResultScreenState extends State<ResultScreen>
   bool _processing = false;
   bool _buttonDisabled = false;
   bool _loading = false;
-  String _uploadStatus = '';
+  final String _uploadStatus = '';
 
   final Map<String, String> _descriptions = {
     'battery':
@@ -283,6 +283,7 @@ class _ResultScreenState extends State<ResultScreen>
           ],
         ),
       ),
+      backgroundColor: mobileBackgroundColor,
     );
   }
 }

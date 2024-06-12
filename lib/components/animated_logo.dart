@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AnimatedLogo extends StatefulWidget {
-  const AnimatedLogo({Key? key}) : super(key: key);
+  const AnimatedLogo({super.key});
 
   @override
   State<AnimatedLogo> createState() => _AnimatedLogoState();

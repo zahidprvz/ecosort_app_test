@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Roboto',
         colorScheme: ColorScheme.fromSwatch().copyWith(
           secondary: Colors.green[900],
-          background: Colors.green[200], // Lighter green background
+          surface: Colors.green[200], // Lighter green background
         ),
       ),
       home: const SplashScreen(),
