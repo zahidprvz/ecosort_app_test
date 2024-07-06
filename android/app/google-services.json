@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "398639572142",
-    "project_id": "waste-ai",
-    "storage_bucket": "waste-ai.appspot.com"
+    "project_number": "866372625015",
+    "project_id": "ecosort-app-test",
+    "storage_bucket": "ecosort-app-test.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:398639572142:android:c6659f6ee4043bbd63b93f",
+        "mobilesdk_app_id": "1:866372625015:android:6135a2856a2821a3dd9c72",
         "android_client_info": {
-          "package_name": "waste.ai"
+          "package_name": "com.example.ecosort_app_test"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBBnC7QJ5H75ZEbjA8yZxQNbsH5SOXX1K4"
+          "current_key": "AIzaSyDSA5o1t1f5HdK0rwM1BnRjNmZxGBG28z8"
         }
       ],
       "services": {

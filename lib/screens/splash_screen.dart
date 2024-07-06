@@ -3,7 +3,6 @@ import 'package:ecosort_app_test/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../components/animated_logo.dart';
-import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

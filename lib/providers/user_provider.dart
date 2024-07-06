@@ -1,6 +1,6 @@
 import 'package:ecosort_app_test/models/user.dart';
 import 'package:ecosort_app_test/services/auth_methods.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class UserProvider with ChangeNotifier {
   User? _user;

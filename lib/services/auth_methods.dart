@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecosort_app_test/models/user.dart' as model;
 import 'package:firebase_auth/firebase_auth.dart';

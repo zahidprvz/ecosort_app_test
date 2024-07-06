@@ -13,6 +13,15 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttonStyle = ElevatedButton.styleFrom(
+      backgroundColor: secondaryColor,
+      foregroundColor: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
@@ -42,9 +51,9 @@ class HomeScreen extends StatelessWidget {
               children: [
                 _buildWelcomeCard(),
                 const SizedBox(height: 20),
-                _buildImageOptions(context),
+                _buildImageOptions(context, buttonStyle),
                 const SizedBox(height: 20),
-                _buildHelpButton(context),
+                _buildHelpButton(context, buttonStyle),
               ],
             ),
           ),
@@ -113,62 +122,50 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildImageOptions(BuildContext context) {
-    return Column(
+  Widget _buildImageOptions(BuildContext context, ButtonStyle buttonStyle) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton.icon(
-          onPressed: () {
-            _captureImage(context);
-          },
-          icon: const Icon(Icons.camera_alt),
-          label: const Text('Take Photo'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: secondaryColor,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: () {
+              _captureImage(context);
+            },
+            icon: const Icon(Icons.camera_alt),
+            label: const Text('Take Photo'),
+            style: buttonStyle,
           ),
         ),
-        const SizedBox(height: 10),
-        ElevatedButton.icon(
-          onPressed: () {
-            _pickImageFromGallery(context);
-          },
-          icon: const Icon(Icons.photo_library),
-          label: const Text('Choose Image'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: secondaryColor,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+        const SizedBox(width: 10), // Add a slight width between the buttons
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: () {
+              _pickImageFromGallery(context);
+            },
+            icon: const Icon(Icons.photo_library),
+            label: const Text('Choose Image'),
+            style: buttonStyle,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildHelpButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) => const HelpDialog(),
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: secondaryColor,
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+  Widget _buildHelpButton(BuildContext context, ButtonStyle buttonStyle) {
+    return SizedBox(
+      height: 60, // Define a fixed height
+      child: ElevatedButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => const HelpDialog(),
+          );
+        },
+        style: buttonStyle,
+        child: const Text(
+          'Help',
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
-      ),
-      child: const Text(
-        'Help',
-        style: TextStyle(fontSize: 18, color: Colors.white),
       ),
     );
   }

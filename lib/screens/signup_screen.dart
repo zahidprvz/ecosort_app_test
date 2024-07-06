@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:ecosort_app_test/components/show_snackbar.dart';
 import 'package:ecosort_app_test/components/text_field_input.dart';
 import 'package:ecosort_app_test/screens/home_screen.dart';
@@ -19,7 +18,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-  Uint8List? _image;
+  // Uint8List? _image;
   bool _isLoading = false;
 
   @override
